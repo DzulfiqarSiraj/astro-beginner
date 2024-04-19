@@ -1,31 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import axios from "axios"
+import moment from "moment"
 
-const users = [
-    {
-        id: 1,
-        name: "Dzulfiqar Siraj",
-        job: "Web Developer",
-        favColor: "Blue",
-    },
-    {
-        id: 2,
-        name: "Intan Permata Sani",
-        job: "Lab Assistant",
-        favColor: "Yellow",
-    },
-    {
-        id: 3,
-        name: "Omnia Farahna Sungkar",
-        job: "Businesswoman",
-        favColor: "Red",
-    },
-];
+const usersData = await axios.get('http://localhost:8888/users')
+const users = usersData.data.results
+
+
 ---
 
 <Layout title="Users">
     <main class="flex flex-col bg-[#191D24] h-screen p-24 gap-5">
         <h1 class="text-5xl font-bold">List Users</h1>
+        
         <!-- table - start -->
         <div class="overflow-x-auto">
             <table class="table">
@@ -34,17 +21,22 @@ const users = [
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>Job</th>
-                        <th>Favorite Color</th>
+                        <th>Email</th>
+                        <th>Created Date</th>
+                        <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user) => (
+                    {users.map((user: { id: unknown; name: unknown; email: unknown; created_at: unknown; }) => (
                         <tr>
                             <th>{user.id}</th>
                             <td>{user.name}</td>
-                            <td>{user.job}</td>
-                            <td>{user.favColor}</td>
+                            <td>{user.email}</td>
+                            <td>{moment(user.created_at).format('LLLL')}</td>
+                            <td>
+                                <button class="btn btn-active btn-neutral">Edit</button>
+                                <button class="btn btn-active btn-error">Delete</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
