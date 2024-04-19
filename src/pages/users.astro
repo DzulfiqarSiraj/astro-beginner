@@ -8,6 +8,18 @@ const users = [
         job: "Web Developer",
         favColor: "Blue",
     },
+    {
+        id: 2,
+        name: "Intan Permata Sani",
+        job: "Lab Assistant",
+        favColor: "Yellow",
+    },
+    {
+        id: 3,
+        name: "Omnia Farahna Sungkar",
+        job: "Businesswoman",
+        favColor: "Red",
+    },
 ];
 ---
 
@@ -20,34 +32,21 @@ const users = [
                 <!-- head -->
                 <thead class="bg-[#1D222A]">
                     <tr>
-                        <th></th>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Job</th>
                         <th>Favorite Color</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- row 1 -->
-                    <tr>
-                        <th>1</th>
-                        <td>Cy Ganderton</td>
-                        <td>Quality Control Specialist</td>
-                        <td>Blue</td>
-                    </tr>
-                    <!-- row 2 -->
-                    <tr>
-                        <th>2</th>
-                        <td>Hart Hagerty</td>
-                        <td>Desktop Support Technician</td>
-                        <td>Purple</td>
-                    </tr>
-                    <!-- row 3 -->
-                    <tr>
-                        <th>3</th>
-                        <td>Brice Swyre</td>
-                        <td>Tax Accountant</td>
-                        <td>Red</td>
-                    </tr>
+                    {users.map((user) => (
+                        <tr>
+                            <th>{user.id}</th>
+                            <td>{user.name}</td>
+                            <td>{user.job}</td>
+                            <td>{user.favColor}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
