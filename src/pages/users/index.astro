@@ -15,7 +15,7 @@ const users = usersData.data.results
     <div class="overflow-x-auto">
         <table class="table">
             <!-- head -->
-            <thead class="bg-[#1D222A]">
+            <thead class="bg-[#1D222A] sticky top-0">
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
@@ -71,7 +71,7 @@ const users = usersData.data.results
                 </form>
             </div>
             <div class="modal-action justify-normal">
-            <form id="add-user-form" class="flex-1 flex flex-col gap-5">
+            <form id="add-user-form" class="flex-1 flex flex-col gap-5 px-5">
                 <label class="input input-bordered flex items-center gap-2 text-amber-500">
                     Name
                     <input type="text" class="grow" name="username" placeholder="Username" autocomplete="on"/>
