@@ -14,9 +14,11 @@ const { title } = Astro.props;
     </head>
     <body>
         <Navbar />
-        <slot>
-            <p class="p-28">404 Not Found</p>
-        </slot>
+        <main class="flex flex-col bg-[#191D24] h-screen p-24 gap-5">
+            <slot>
+                <p class="p-28">404 Not Found</p>
+            </slot>
+        </main>
         <Footer />
     </body>
 </html>
