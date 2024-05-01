@@ -1,14 +1,24 @@
 import moment from 'moment'
+import { navigate } from 'astro:transitions/client'
+import axios from 'axios'
 
 
 const UserForm = ({user}) => {
     const getData = async (e) => {
+      try {
         e.preventDefault()
         const form = {
             name: e.target['name'].value,
             email: e.target['email'].value
         }
-        console.log(form)
+
+        const {data} = await axios.patch(`http://localhost:8888/users/${user.id}`, form)
+        if(data.success){
+          navigate("/users")
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     return (
@@ -18,10 +28,10 @@ const UserForm = ({user}) => {
             <tbody>
               {/* <!-- row 1 --> */}
               <tr>
-                <td className="w-5">Id</td>
+                <td>Id</td>
                 <td>
                   <label className="form-control">
-                    <input type="text" readOnly disabled defaultValue={user.id} className="input input-bordered w-full" />
+                    <input id="id" type="text" readOnly disabled defaultValue={user.id} className="input input-bordered w-full" />
                   </label>
                 </td>
               </tr>
@@ -30,7 +40,7 @@ const UserForm = ({user}) => {
                 <td>Name</td>
                 <td>
                   <label className="form-control">
-                    <input type="text" name="name" defaultValue={user.name} className="input input-bordered " />
+                    <input id="name" type="text" name="name" defaultValue={user.name} className="input input-bordered " autoComplete='on'/>
                   </label>
                 </td>
               </tr>
@@ -39,7 +49,7 @@ const UserForm = ({user}) => {
                 <td>Email</td>
                 <td>
                   <label className="form-control">
-                    <input type="text" name="email" defaultValue={user.email} className="input input-bordered " />
+                    <input id="email" type="text" name="email" defaultValue={user.email} className="input input-bordered " autoComplete='on'/>
                   </label>
                 </td>
               </tr>
@@ -48,25 +58,25 @@ const UserForm = ({user}) => {
                 <td>Password</td>
                 <td>
                   <label className="form-control">
-                    <input type="text" name="password" defaultValue={user.password} className="input input-bordered " />
+                    <input id="password" type="password" name="password" defaultValue={user.password} className="input input-bordered " />
                   </label>
                 </td>
               </tr>
               {/* <!-- row 5 --> */}
               <tr>
-                <td>Created</td>
+                <td className='w-28'>Created at</td>
                 <td>
                   <label className="form-control">
-                    <input type="text" readOnly disabled defaultValue={moment(user.created_at).format('LLLL')} className="input input-bordered" />
+                    <input id="created_at" type="text" readOnly disabled defaultValue={moment(user.created_at).format('LLLL')} className="input input-bordered" />
                   </label>
                 </td>
               </tr>
               {/* <!-- row 6 --> */}
               <tr>
-                <td>Updated</td>
+                <td>Updated at</td>
                 <td>
                   <label className="form-control">
-                    <input type="text" readOnly disabled defaultValue={moment(user.updated_at).format('LLLL') == 'Invalid date' ? '' : moment(user.updated_at).format('LLLL')} className="input input-bordered" />
+                    <input id="updated_at" type="text" readOnly disabled defaultValue={moment(user.updated_at).format('LLLL') == 'Invalid date' ? '' : moment(user.updated_at).format('LLLL')} className="input input-bordered" />
                   </label>
                 </td>
               </tr>
