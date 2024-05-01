@@ -9,7 +9,8 @@ const UserForm = ({user}) => {
         e.preventDefault()
         const form = {
             name: e.target['name'].value,
-            email: e.target['email'].value
+            email: e.target['email'].value,
+            password: e.target['password'].value
         }
 
         const {data} = await axios.patch(`http://localhost:8888/users/${user.id}`, form)
@@ -83,7 +84,7 @@ const UserForm = ({user}) => {
             </tbody>
           </table>
         </div>
-        <button type="submit" className="btn btn-warning">Submit</button>
+        <button type="submit" className="btn btn-warning">Update</button>
       </form>
     )
 }
