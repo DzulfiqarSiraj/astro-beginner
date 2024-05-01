@@ -59,7 +59,7 @@ const UserForm = ({user}) => {
                 <td>Password</td>
                 <td>
                   <label className="form-control">
-                    <input id="password" type="password" name="password" defaultValue={user.password} className="input input-bordered " />
+                    <input id="password" type="password" name="password" placeholder="your password ..." className="input input-bordered " />
                   </label>
                 </td>
               </tr>
@@ -84,7 +84,7 @@ const UserForm = ({user}) => {
             </tbody>
           </table>
         </div>
-        <button type="submit" className="btn btn-warning">Update</button>
+        <button type="submit" className="btn hover:bg-amber-500 hover:text-[#191D24]">Update</button>
       </form>
     )
 }
