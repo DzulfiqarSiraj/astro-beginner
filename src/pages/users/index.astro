@@ -32,8 +32,8 @@ const users = usersData.data.results
                         <td>{user.email}</td>
                         <td>{moment(user.created_at).format('LLLL')}</td>
                         <td class="flex gap-3">
-                            <a class="btn btn-active btn-neutral" href={`/users/${user.id}`}>Edit</a>
-                            <button class="action-delete btn btn-active btn-error" onclick="my_modal_1.showModal()" data-user-id={user.id}>Delete</button>
+                            <a class="btn btn-active btn-neutral" href={`/users/${user.id}`}>Detail</a>
+                            <button class="action-delete btn btn-active btn-error" onclick="my_modal_1_1.showModal()" data-user-id={user.id} data-user-name={user.name}>Delete</button>
                         </td>
                     </tr>
                 ))}
@@ -43,29 +43,100 @@ const users = usersData.data.results
     <!-- table - end -->
 
     <!-- modal : delete - start -->
-    <dialog id="my_modal_1" class="modal modal-bottom sm:modal-middle">
-    <div class="modal-box">
-        <h3 class="font-bold text-lg">Delete</h3>
-        <p class="py-4">Are you sure to delete with id?</p>
-        <div class="modal-action">
-        <form method="dialog">
-            <!-- if there is a button in form, it will close the modal -->
-            <button class="accept-delete-btn btn">Yes</button>
-            <button class="btn">No</button>
-        </form>
+    <dialog id="my_modal_1_1" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Delete</h3>
+            <p id="confirm-delete-text" class="py-4"></p>
+            <div class="modal-action">
+            <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="accept-delete-btn btn">Yes</button>
+                <button class="btn">No</button>
+            </form>
+            </div>
         </div>
-    </div>
     </dialog>
-    <!-- modal : delete - start -->
+    <!-- modal : delete - end -->
+
+    <!-- modal : create - start -->
+    <button class="btn" onclick="my_modal_1_2.showModal()"><img src="/add-circle-svgrepo-com.svg" alt=""> Add User</button>
+    <dialog id="my_modal_1_2" class="modal">
+        <div class="modal-box">
+            <div class="flex flex-row items-center justify-between">
+                <h3 class="font-bold text-lg">Hello Astronaut!</h3>
+                <form method="dialog" class="self-end">
+                    <button class="btn btn-circle btn-sm hover:btn-error">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                      </button>
+                </form>
+            </div>
+            <div class="modal-action justify-normal">
+            <form id="add-user-form" class="flex-1 flex flex-col gap-5">
+                <label class="input input-bordered flex items-center gap-2 text-amber-500">
+                    Name
+                    <input type="text" class="grow" name="username" placeholder="Username" autocomplete="on"/>
+                </label>
+                <label class="input input-bordered flex items-center gap-2 text-amber-500">
+                    Email
+                    <input type="email" class="grow" name="email" placeholder="user@mail.com" autocomplete="on"/>
+                </label>
+                <label class="input input-bordered flex items-center gap-2 text-amber-500">
+                    Password
+                    <input type="password" class="grow" name="password" placeholder="user123" />
+                </label>
+                <!-- if there is a button in form, it will close the modal -->
+                <button type="submit" class="btn w-fit self-center hover:bg-amber-500 hover:text-[#191D24]">Create</button>
+            </form>
+
+            </div>
+        </div>
+    </dialog>
+
+    <!-- modal : create - start -->
 </Layout>
 
 <script>
     const deleteBtn = document.querySelectorAll('.action-delete')
     const acceptDelBtn = document.querySelector('.accept-delete-btn')
+    const confirmDelTxt = document.getElementById('confirm-delete-text')
+    const createUserForm = document.getElementById('add-user-form')
+
+    createUserForm.addEventListener('submit', async (event: any) => {
+        event.preventDefault()
+        try {
+            const formData = new FormData(event.target)
+            const name = formData.get('username')
+            const email = formData.get('email')
+            const password = formData.get('password')
+            const data = {
+                name,
+                email,
+                password
+            }
+    
+            const user = await fetch('http://localhost:8888/users', {
+                method: "POST",
+                mode: 'cors',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+
+            const userCreated = await user.json()
+            if(userCreated.success){
+                window.location.reload()
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+    })
+
     deleteBtn.forEach((btn) => (
         btn.addEventListener('click', (event) => {
             event.preventDefault()
             event.stopPropagation()
+            confirmDelTxt.innerHTML = `Are you sure to delete ${btn.getAttribute('data-user-name')} ?`
             acceptDelBtn.addEventListener('click', async(event)=> {
                 event.preventDefault()
                 try {
